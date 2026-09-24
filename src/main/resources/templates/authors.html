@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<div th:if="${sRDTO != null}">
+		<p th:if="${sRDTO.getResponse() == 'XML'}"> Sikeres XML létrehozás</p>
+		<p th:if="${sRDTO.getResponse() == 'DB'}"> Sikeres mentés az adatbázisba</p>
+	</div>
+	
+
+	<form action="authors/search" method="get">
+		<input type="text" name="searchText"/>
+		<input type="submit" value="Keresés"/>
+	</form>
+	
+	<form action="/authors/export" method="get">
+		<select name="exportType">
+			<option value="xml">XML fájl</option>
+			<option value="database">Adatbázis</option>
+		</select>
+		
+		<input type="submit" value="Exportálás"/>
+	</form>
+
+	<table>
+		<tr>
+			<td>Name</td>
+			<td>Count</td>
+		</tr>
+		<tr th:each="author : ${authors}">
+			<td th:text="${author.getName()}"></td>
+			<td th:text="${author.getCounter()}"></td>
+		</tr>
+	</table>
+
+</body>
+</html>
