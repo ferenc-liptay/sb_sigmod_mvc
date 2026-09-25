@@ -27,7 +27,7 @@ public class XmlReader {
 		try {
 			SAXBuilder sb = new SAXBuilder();
 			Document doc = sb.build(new File(
-					"E:\\Java Fullstack tanfolyam 2026 tananyagok\\21. XML\\Java_XML_Ora3\\sigmodRecords.xml"));
+					"E:\\Java Fullstack tanfolyam 2026 tananyagok\\21.  XML\\Java_XML_Ora3\\sigmodRecords.xml"));
 			Element rootElement = doc.getRootElement();
 			Namespace ns = rootElement.getNamespace();
 
@@ -75,12 +75,11 @@ public class XmlReader {
 	}
 
 	public void createXml(Map<String, Integer> authorMap) {
-
+		
 		try {
-
+			
 			/** XML */
-			FileWriter writer = new FileWriter(
-					"D:\\Java Fullstack tanfolyam 2026 tananyagok\\21. XML\\Java_XML_Ora3\\sigmodAuthors.xml");
+			FileWriter writer = new FileWriter("E:\\Java Fullstack tanfolyam 2026 tananyagok\\21.  XML\\Java_XML_Ora3\\sigmodAuthors.xml");
 			XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
 			Document doc = new Document();
 
@@ -102,7 +101,7 @@ public class XmlReader {
 			writer.close();
 
 		} catch (Exception e) {
-
+			System.out.println(e);
 		}
 
 	}

@@ -33,7 +33,7 @@ public class AppController {
 				Model model
 			) {
 		
-		List<AuthorDTO> authors = service.getAuthors();
+		List<AuthorDTO> authors = service.getAuthors("abc");
 		
 		model.addAttribute("authors", authors);
 		return "authors.html";
@@ -65,34 +65,47 @@ public class AppController {
 		return "authors.html";
 	}
 	
-	@GetMapping("authors/select")
-	public String getSelectedType(
-			
-			@RequestParam("selectedType") String selectedType
+	@GetMapping("/authors/sort")
+	public String getSort(
+			Model model,
+			@RequestParam("sort") String sortType
 			) {
 		
-		if(selectedType.equals("xml")) {
-			
-			return "xml.html";
-			
-		} else if(selectedType.equals("database")) {
-			
-			return "databse.html";
-		}
+		List<AuthorDTO> authors = service.getAuthors(sortType);
 		
-		return "home.html";
+		model.addAttribute("authors", authors);
+		
+		return "authors.html";
 	}
 	
-	@GetMapping("/authors/xml")
-	public String getXml(
-			Model model,
-			@RequestParam("xmlPath") String xmlPath
-			) {
-		
-		AuthorResponseDTO aRDTO = service.getAuthorsFromXml(xmlPath);
-		
-		model.addAttribute("aRDTO", aRDTO);
-		return "xml.html";
-	}
+//	@GetMapping("authors/select")
+//	public String getSelectedType(
+//			
+//			@RequestParam("selectedType") String selectedType
+//			) {
+//		
+//		if(selectedType.equals("xml")) {
+//			
+//			return "xml.html";
+//			
+//		} else if(selectedType.equals("database")) {
+//			
+//			return "databse.html";
+//		}
+//		
+//		return "home.html";
+//	}
+	
+//	@GetMapping("/authors/xml")
+//	public String getXml(
+//			Model model,
+//			@RequestParam("xmlPath") String xmlPath
+//			) {
+//		
+//		AuthorResponseDTO aRDTO = service.getAuthorsFromXml(xmlPath);
+//		
+//		model.addAttribute("aRDTO", aRDTO);
+//		return "xml.html";
+//	}
 
 }

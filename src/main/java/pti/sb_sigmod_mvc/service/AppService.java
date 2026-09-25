@@ -30,25 +30,61 @@ public class AppService {
 	}
 	
 	
-	public List<AuthorDTO> getAuthors() {
+	public List<AuthorDTO> getAuthors(String sortType) {
 
 		List<AuthorDTO> authorDTOList = new ArrayList<>();
 		
 		Map<String, Integer> authorCounts = reader.getAuthors();
 		
-		List<String> authorNames = new ArrayList<>(authorCounts.keySet());
-		
-		Collections.sort(authorNames);
-		
-		for(String authorName : authorNames) {
+		if(sortType.equals("abc")) {
 			
-			AuthorDTO authorDTO = new AuthorDTO(
+			List<String> authorNames = new ArrayList<>(authorCounts.keySet());
+			
+			Collections.sort(authorNames);
+			
+			for(String authorName : authorNames) {
+				
+				AuthorDTO authorDTO = new AuthorDTO(
 						authorName,
 						authorCounts.get(authorName)
-					);
+						);
+				
+				authorDTOList.add(authorDTO);
+			}
 			
-			authorDTOList.add(authorDTO);
+		} else if(sortType.equals("counts")) {
+			
+			for(Map.Entry<String, Integer> author : authorCounts.entrySet()) {
+				
+				AuthorDTO authorDTO = new AuthorDTO(
+						author.getKey(),
+						author.getValue()
+						);
+				
+				authorDTOList.add(authorDTO);
+				
+			}
+			
+			for(int index = 0; index < authorDTOList.size(); index++) {
+				AuthorDTO dto = authorDTOList.get(index);
+				for(int nextIndex = index + 1; nextIndex < authorDTOList.size(); nextIndex++) {
+					
+					AuthorDTO nextDto = authorDTOList.get(nextIndex);
+					
+					if(dto.getCounter() < nextDto.getCounter()) {
+						
+						authorDTOList.set(index, nextDto);
+						authorDTOList.set(nextIndex, dto);
+						index--;
+						break;
+					}
+
+				}
+
+			}
+			
 		}
+		
 		
 		
 		return authorDTOList;
