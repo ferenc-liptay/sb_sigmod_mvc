@@ -12,8 +12,12 @@
 			<option value="database">Adatbázis</option>
 		</select>
 		
+		<p>Elérési útvonal:</p>
+		<input type="text" name="xmlPath"/>
+		
 		<input type="submit" value="Exportálás"/>
 	</form>
 
+	<p th:if="${error == true}">Nem sikerült betölteni az oldalt</p>
 </body>
 </html>

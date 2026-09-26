@@ -26,7 +26,10 @@ public class AppController {
 		this.service = service;
 	}
 	
-	
+	@GetMapping("/")
+	public String index() {
+		return "index.html";
+	}
 	
 	@GetMapping("/authors")
 	public String getAuthors(
@@ -63,6 +66,7 @@ public class AppController {
 		
 		
 		return "authors.html";
+		
 	}
 	
 	@GetMapping("/authors/sort")
@@ -78,34 +82,28 @@ public class AppController {
 		return "authors.html";
 	}
 	
-//	@GetMapping("authors/select")
-//	public String getSelectedType(
-//			
-//			@RequestParam("selectedType") String selectedType
-//			) {
-//		
-//		if(selectedType.equals("xml")) {
-//			
-//			return "xml.html";
-//			
-//		} else if(selectedType.equals("database")) {
-//			
-//			return "databse.html";
-//		}
-//		
-//		return "home.html";
-//	}
-	
-//	@GetMapping("/authors/xml")
-//	public String getXml(
-//			Model model,
-//			@RequestParam("xmlPath") String xmlPath
-//			) {
-//		
-//		AuthorResponseDTO aRDTO = service.getAuthorsFromXml(xmlPath);
-//		
-//		model.addAttribute("aRDTO", aRDTO);
-//		return "xml.html";
-//	}
+	@GetMapping("authors/select")
+	public String getSelectedType(
+			Model model,
+			@RequestParam("selectedType") String type,
+			@RequestParam("xmlPath") String path
+			) {
+		String html = "index.html";
+		
+		List<AuthorDTO> authors = service.getSelectedType(type, path);
+		
+		if(authors != null) {
+			html = "authors.html";
+			model.addAttribute("authors", authors);
+			
+			
+		}else {
+			
+			model.addAttribute("error", true);
+			html = "index.html";
+		}
+
+		return html;
+	}
 
 }

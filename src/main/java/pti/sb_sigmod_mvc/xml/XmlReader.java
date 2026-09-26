@@ -2,6 +2,7 @@ package pti.sb_sigmod_mvc.xml;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
@@ -167,6 +169,27 @@ public class XmlReader {
 		}
 
 		return authorList;
+	}
+
+	public Map<String, Integer> readXML(String path) throws JDOMException, IOException {
+		Map<String, Integer> authorsMap = new HashMap<>();
+		
+		
+			SAXBuilder sb = new SAXBuilder();
+			Document doc = sb.build(new File(path));
+			
+			Element rootElement = doc.getRootElement();
+			
+			List<Element> authorList = rootElement.getChildren("author");
+			
+			for(Element authorElement : authorList) {
+				Integer count = Integer.parseInt(authorElement.getAttributeValue("count"));
+				
+				authorsMap.put(authorElement.getValue(), count);
+			}
+			
+		
+		return authorsMap;
 	}
 
 }

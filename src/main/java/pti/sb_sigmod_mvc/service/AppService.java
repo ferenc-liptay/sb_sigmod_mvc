@@ -2,6 +2,7 @@ package pti.sb_sigmod_mvc.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pti.sb_sigmod_mvc.dto.AuthorDTO;
-import pti.sb_sigmod_mvc.dto.AuthorResponseDTO;
 import pti.sb_sigmod_mvc.dto.SimpleResponseDTO;
 import pti.sb_sigmod_mvc.model.Author;
 import pti.sb_sigmod_mvc.repository.AuthorRepository;
@@ -143,17 +143,52 @@ public class AppService {
 	}
 
 
-	public AuthorResponseDTO getSelectedType(String selectedType) {
-		AuthorResponseDTO authorResponseDTO = null;
+	public List<AuthorDTO> getSelectedType(String selectedType, String path) {
+		List<AuthorDTO> authorDTOList = new ArrayList<>();
+		
 		
 		if(selectedType.equals("xml")) {
-			reader.getAuthors();
+			try {
+				
+				Map<String, Integer> authorMap = reader.readXML(path);
+				
 			
-		}else if (selectedType.equals("database")) {
+				for(Map.Entry<String, Integer> xmlAuthor : authorMap.entrySet()) {
+					AuthorDTO authorDTO = new AuthorDTO(
+							xmlAuthor.getKey(),
+							xmlAuthor.getValue()
+							);
+					
+					authorDTOList.add(authorDTO);
+				}
+				
+			} catch (Exception e) {
+				
+				System.out.println(e.getMessage());
+				return null;
+			
+			}
+			
+		} else if (selectedType.equals("database")) {
+			Iterable<Author> authorList = authorRepo.findAll();
+			
+			if(authorList.iterator().hasNext()) {
+				
+				
+				for(Author author : authorList) {
+					
+					AuthorDTO authorDTO = new AuthorDTO(
+							author.getName(),
+							author.getCount()
+							);
+					
+					authorDTOList.add(authorDTO);
+				}
+			}
+
 		}
-		
-		
-		return authorResponseDTO;
+
+		return authorDTOList;
 	}
 
 }
